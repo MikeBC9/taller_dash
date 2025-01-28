@@ -20,8 +20,35 @@ app.config.suppress_callback_exceptions = True
 
 
 # Load data from csv
+# Load data from csv
 def load_data():
-    # To do: Completar la función 
+    """
+    Carga los datos históricos de producción energética junto con el pronóstico.
+    La columna 'time' se convierte a formato datetime y se establece como índice.
+    :return: DataFrame con los datos cargados.
+    """
+    try:
+        # Cargar el archivo CSV
+        data = pd.read_csv("datos_energia.csv")
+
+        # Convertir la columna 'time' a formato datetime (ISO8601)
+        data['time'] = pd.to_datetime(data['time'])
+
+        # Establecer la columna 'time' como índice del DataFrame
+        data.set_index('time', inplace=True)
+
+        # Verificar que el DataFrame no esté vacío
+        if data.empty:
+            raise ValueError("El archivo CSV está vacío o no tiene datos válidos.")
+
+        return data
+
+    except Exception as e:
+        print(f"Error al cargar los datos: {e}")
+        return None
+
+
+
     
 
 # Cargar datos
